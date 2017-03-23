@@ -48,7 +48,7 @@ Gather independent samples: $X_{11},\ldots,X_{1n_1}$ i.i.d. $N(\mu_1,\sigma)$ an
 
 The sample variances $S^2_1$ and $S^2_2$ are both unbiased estimators for $\sigma^2$, so any weighted average (with weights that add up to 1) of them will also be an unbiased estimator.
 
-\pause We call this the pooled variance estimator:
+\pause We call the following sample-size-based choice of weights the \textit{pooled sample variance} estimator for $\sigma^2$:
 $$S^2_p = \frac{(n_1 - 1)S_1^2}{(n_1 - 1) + (n_2 - 1)} + \frac{(n_2 - 1)S_2^2}{(n_1 - 1) + (n_2 - 1)}$$
 
 $$S^2_p = \frac{(n_1 - 1)S_1^2 + (n_2 - 1)S_2^2}{n_1 + n_2 - 2}$$
@@ -177,7 +177,7 @@ Instead of watching paint dry, let's watch plants grow. (Textbook question 9.40.
 
 20 tree seeds are planted. 10 get a nitrogen fertilizer. After 140 days all the stem growths are measured in grams. The goal is to estimate the mean difference between the two groups.
 
-Here is a summary of the data:
+Here is a summary of the data. It is unlikely that the group variances are equal.
 ```{r}
 nitro <- read.delim("Ex09.40.txt") %>% gather(key=fertilizer, value=weight)
 nitro %>% 
@@ -193,3 +193,16 @@ upper3 <- nitro_fit$conf.int[2]
 The degrees of freedom is $\nu=`r df3`$. The number from the $t$ distribution is $t_{`r df3`, 0.025} = `r -qt(0.025, df3)`$.
 
 The 95\% confidence interval is $[`r lower3`, `r upper3`]$.
+
+## two-sample $t$ procedure model assumptions
+
+There are two assumptions.
+
+1. The populations are both normal.
+2. The samples are independent.
+
+\pause The normality assumption is assessed by looking at normal quantile plots of both samples. If there is a violation, a large sample size for that sample makes the problem go away.
+
+\pause The independence assumption can only be assessed by considering the way the dataset was collected.
+
+\pause There is one very common way to collect samples that are not independent, and that is to collect two observations, say $X_{i1}$ and $X_{i2}$ on the $i^{th}$ experimental unit. We will examine this situation next. 
